@@ -16,6 +16,10 @@ namespace AppRegPortal
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+            //For settings that need to be chaned per deployment, force the user to update.
+            await builder.AddJsonConfiguration("local.settings.json", true);
+
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
