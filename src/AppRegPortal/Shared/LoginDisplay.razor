@@ -5,19 +5,26 @@
 @inject SignOutSessionStateManager SignOutManager
 
 <AuthorizeView>
-    <Authorized>
-        Hello, @context.User.Identity.Name!
-        <button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button>
-    </Authorized>
-    <NotAuthorized>
-        <a href="authentication/login">Log in</a>
-    </NotAuthorized>
+	<Authorized>
+		<MudText>@context.User.Identity.Name</MudText>
+		<MudIconButton Icon="@Icons.Material.Filled.Logout" Color="@Color.Inherit" title="Log out"
+					   @onclick="BeginLogout">Log out</MudIconButton>
+	</Authorized>
+	<NotAuthorized>
+		<MudIconButton Icon="@Icons.Material.Filled.Login" Color="@Color.Inherit" title="Log in"
+					   Link="authentication/login">Log in</MudIconButton>
+	</NotAuthorized>
 </AuthorizeView>
 
-@code{
-    private async Task BeginLogout(MouseEventArgs args)
-    {
-        await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo("authentication/logout");
-    }
+@code {
+	private async Task BeginLogout(MouseEventArgs args)
+	{
+		await SignOutManager.SetSignOutState();
+		Navigation.NavigateTo("authentication/logout");
+	}
+
+	private void Login(MouseEventArgs args)
+	{
+		Navigation.NavigateTo("authentication/login");
+	}
 }

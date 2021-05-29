@@ -1,12 +1,16 @@
+using AppRegPortal.Auth;
+
+using AppRegShared;
+
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+
+using MudBlazor.Services;
 
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AppRegPortal
@@ -24,14 +28,38 @@ namespace AppRegPortal
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            builder.Services.AddMsalAuthentication(options =>
-            {
-                builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-               
-                options.ProviderOptions.DefaultAccessTokenScopes.Add("https://graph.microsoft.com/User.Read");
-            });
+            Program.ConfigureAuth(builder);
+
+            builder.Services.AddMudServices();
 
             await builder.Build().RunAsync();
+        }
+
+        private static void ConfigureAuth(WebAssemblyHostBuilder builder)
+        {
+            builder.Services.AddMsalAuthentication<RemoteAuthenticationState, CustomUserAccount>(options =>
+            {
+                builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("https://graph.microsoft.com/User.Read");
+                options.UserOptions.RoleClaim = "appRole";
+
+            }).AddAccountClaimsPrincipalFactory<RemoteAuthenticationState, CustomUserAccount, CustomAccountFactory>();
+
+            builder.Services.AddAuthorizationCore(options =>
+            {
+                options.AddPolicy(Constants.Auth.UserPolicy, policy =>
+                    policy.RequireRole(ApplicationRoles.UserRole));
+
+                options.AddPolicy(Constants.Auth.AdminPolicy, policy =>
+                    policy.RequireRole(ApplicationRoles.AdminRole));
+
+                options.AddPolicy(Constants.Auth.ApproverPolicy, policy =>
+                    policy.RequireRole(ApplicationRoles.ApproverRole));
+
+                options.AddPolicy(Constants.Auth.DisplayNavigation, policy =>
+                    policy.RequireRole(ApplicationRoles.AdminRole, ApplicationRoles.ApproverRole));
+            });
         }
     }
 }
