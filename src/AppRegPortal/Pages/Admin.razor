@@ -1,49 +1,41 @@
 ﻿@page "/admin"
 @using AppRegShared
 @using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
 @inject IAuthorizationService AuthorizationService
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-16">
-	<button @onclick="CheckPolicy">Check policy</button>
 
-	<p>Policy Message: @policyMessage</p>
+<MudTabs Outlined="true">
+	<MudTabPanel Text="Auth"  Icon="@Icons.Material.Filled.AssignmentInd">
+	 	<MudText>@this.UserId</MudText>
+	<MudText>@this.Message</MudText>
 
-	<p>User: @userP</p>
-	<p>Admin: @adminP</p>
-	<p>Approver: @approverP</p>
-	<p>Nav: @navP</p>
+	@if (this.Claims.Count() > 0)
+	{
+	 <MudTable Items="@Claims" Hover="true" SortLabel="Sort By">
+	  <HeaderContent>
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.Type)">Type</MudTableSortLabel></MudTh>
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.Value)">Value</MudTableSortLabel></MudTh>
+
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.Issuer)">Issuer</MudTableSortLabel></MudTh>
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.OriginalIssuer)">Original Iss</MudTableSortLabel></MudTh>
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.Subject)">Subject</MudTableSortLabel></MudTh>
+	  </HeaderContent>
+	  <RowTemplate>
+	   <MudTd DataLabel="Type">@context.Type</MudTd>
+	   <MudTd DataLabel="Value">@context.Value</MudTd>
+	   <MudTd DataLabel="Issuer">@context.Issuer</MudTd>
+	   <MudTd DataLabel="OriginalIssuer">@context.OriginalIssuer</MudTd>
+	   <MudTd DataLabel="Subject">@context.Subject</MudTd>
+	  </RowTemplate>
+
+	 </MudTable>
+	}
+ </MudTabPanel>
+</MudTabs>
 
 </MudContainer>
 
 
 
-@code {
-	private string policyMessage = "Check hasn't been made yet.";
-	private string userP = "";
-	private string adminP = "";
-	private string approverP = "";
-	private string navP = "";
-
-	[CascadingParameter]
-	private Task<AuthenticationState> authenticationStateTask { get; set; }
-
-	private async void CheckPolicy()
-	{
-		try
-		{
-			var user = (await authenticationStateTask).User;
-
-			bool admin = user.IsInRole(ApplicationRoles.AdminRole);
-			bool approver = user.IsInRole(ApplicationRoles.ApproverRole);
-
-			userP = (await AuthorizationService.AuthorizeAsync(user, Constants.Auth.UserPolicy)).Succeeded.ToString();
-			adminP = (await AuthorizationService.AuthorizeAsync(user, Constants.Auth.AdminPolicy)).Succeeded.ToString();
-			approverP = (await AuthorizationService.AuthorizeAsync(user, Constants.Auth.ApproverPolicy)).Succeeded.ToString();
-			navP = (await AuthorizationService.AuthorizeAsync(user, Constants.Auth.DisplayNavigation)).Succeeded.ToString();
-		}
-		catch (Exception ex)
-		{
-			policyMessage = ex.Message;
-		}
-	}
-}
