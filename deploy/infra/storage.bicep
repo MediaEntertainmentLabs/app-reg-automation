@@ -13,7 +13,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2020-08-01-preview'={
   }
 }
 
-resource eventHubNamespaceDiagnosticSettings 'microsoft.insights/diagnosticSettings@2017-05-01-preview' = {
+resource storageAccountDiagnosticSettings 'microsoft.insights/diagnosticSettings@2017-05-01-preview' = {
    name: 'Send_To_LogAnalytics'
   scope: storageAccount
   properties: {
