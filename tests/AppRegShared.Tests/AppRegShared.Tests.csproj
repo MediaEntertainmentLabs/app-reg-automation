@@ -19,4 +19,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AppRegShared\AppRegShared.csproj" />
+    <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
+  </ItemGroup>
+
 </Project>

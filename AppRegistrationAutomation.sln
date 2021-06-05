@@ -20,7 +20,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUtilities", "tests\TestUtilities\TestUtilities.csproj", "{289CCF50-7FED-4526-B3D2-86F0C959DAEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestUtilities", "tests\TestUtilities\TestUtilities.csproj", "{289CCF50-7FED-4526-B3D2-86F0C959DAEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portal", "Portal", "{B1EF9422-E6CC-425E-A9A9-A34695BA1563}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{143E0D1D-C81E-4C79-BC28-649D074C9DE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +63,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{66AC4809-19C0-4669-815F-750BFB452EB1} = {B1EF9422-E6CC-425E-A9A9-A34695BA1563}
+		{31880C24-6612-474C-90AA-F5F4DCE3509E} = {B1EF9422-E6CC-425E-A9A9-A34695BA1563}
+		{DA98D0C8-4981-4FA3-BA60-BC5593BFA080} = {143E0D1D-C81E-4C79-BC28-649D074C9DE6}
+		{3854582F-9272-4E35-8E23-F39EF826A942} = {143E0D1D-C81E-4C79-BC28-649D074C9DE6}
+		{289CCF50-7FED-4526-B3D2-86F0C959DAEC} = {143E0D1D-C81E-4C79-BC28-649D074C9DE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE49F8CD-A56B-43DB-B7C9-94D1045C498C}

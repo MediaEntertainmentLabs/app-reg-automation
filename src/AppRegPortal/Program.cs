@@ -1,4 +1,5 @@
 using AppRegPortal.Auth;
+using AppRegPortal.Utilities;
 
 using AppRegShared;
 
@@ -30,7 +31,11 @@ namespace AppRegPortal
 
             Program.ConfigureAuth(builder);
 
+            builder.Services.AddLogging();
             builder.Services.AddMudServices();
+
+            builder.Services.UseDIComponentActivator();
+            builder.Services.RegisterAllComponentsInImplementingAssembly<Program>();
 
             await builder.Build().RunAsync();
         }

@@ -1,0 +1,19 @@
+﻿<EditForm Model="@Model" OnValidSubmit="OnValidSubmit">
+	<MudGrid>
+		<MudItem xs="12" md="6" lg="4">
+			<MudTextField Label="Request ID" @bind-Value="@Model.RequestId" For="@(() => Model.RequestId)" />
+		</MudItem>
+		<MudItem xs="12" md="6" lg="4">
+			<MudTextField Label="User Name" @bind-Value="@Model.RequestorUserName" For="@(() => Model.RequestorUserName)" />
+		</MudItem>
+		<MudItem xs="12" md="6" lg="4">
+			<MudTextField Label="User Id" @bind-Value="@Model.RequestorUserId" For="@(() => Model.RequestorUserId)" />
+		</MudItem>
+		<MudItem xs="12" md="6" lg="4">
+			<MudTextField Label="User Email" @bind-Value="@Model.RequestorEmailAddress" For="@(() => Model.RequestorEmailAddress)" />
+		</MudItem>
+		<MudItem xs="12" md="6" lg="4">
+			<MudTextField Label="Application Name" @bind-Value="@Model.ApplicationName" For="@(() => Model.ApplicationName)" />
+		</MudItem>
+	</MudGrid>
+</EditForm>
