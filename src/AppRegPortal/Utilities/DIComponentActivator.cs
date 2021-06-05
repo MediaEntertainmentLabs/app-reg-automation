@@ -14,7 +14,7 @@ namespace AppRegPortal.Utilities
     /// </summary>
     public class DIComponentActivator : IComponentActivator
     {
-        private readonly IServiceProvider _serviceProvider = null;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _logger;
 
         public DIComponentActivator(IServiceProvider serviceProvider, ILogger<DIComponentActivator> logger)
@@ -32,13 +32,16 @@ namespace AppRegPortal.Utilities
                 throw new ArgumentException(message, nameof(componentType));
             }
 
-            object instance = this._serviceProvider.GetService(componentType);
-            if (instance == null)
+            object? instance = this._serviceProvider.GetService(componentType)
+                              ?? Activator.CreateInstance(componentType);
+
+            var component = instance as IComponent;
+            if (component == null)
             {
-                instance = (IComponent)Activator.CreateInstance(componentType);
+                throw new ArgumentException($"Unable to create an instance of {componentType.FullName}");
             }
 
-            return (IComponent)instance;
+            return (IComponent)instance!;
         }
     }
 }

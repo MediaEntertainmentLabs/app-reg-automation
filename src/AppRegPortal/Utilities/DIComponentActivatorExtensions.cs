@@ -22,8 +22,8 @@ namespace AppRegPortal.Utilities
             Guard.NotNull(services, nameof(services));
             var assembly = Assembly.GetAssembly(typeof(T));
 
-            assembly
-                .GetTypes()
+            assembly?
+                .GetTypes()?
                 .Where(t => typeof(IComponent).IsAssignableFrom(t) && t.IsClass)
                 .ToList()
                 .ForEach(t => services.AddTransient(t));

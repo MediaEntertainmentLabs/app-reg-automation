@@ -1,3 +1,5 @@
+using AppRegShared.Utility;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -17,12 +19,20 @@ namespace AppRegPortal.Pages
         private string adminP = "";
         private string approverP = "";
         private string navP = "";
-        [CascadingParameter]
-        private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        private string Message { get; set; }
-        private string UserId { get; set; }
+        //[CascadingParameter]
+        //private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        private string Message { get; set; } = string.Empty;
+        private string UserId { get; set; } = string.Empty;
         private IEnumerable<Claim> Claims { get; set; } = Enumerable.Empty<Claim>();
+
+        private AuthenticationStateProvider _authProvider;
+
+        public Admin(AuthenticationStateProvider authProvider)
+        {
+            this._authProvider = Guard.NotNull(authProvider, nameof(authProvider));
+        }
 
         protected override async Task OnParametersSetAsync()
         {
@@ -32,9 +42,9 @@ namespace AppRegPortal.Pages
 
         private async Task GetClaimsPrincipalData()
         {
-            ClaimsPrincipal user = (await this.authenticationStateTask).User;
+            ClaimsPrincipal user = (await this._authProvider.GetAuthenticationStateAsync()).User;
 
-            if (user.Identity.IsAuthenticated)
+            if (user?.Identity?.IsAuthenticated == true)
             {
                 this.Message = $"{user.Identity.Name} is authenticated.";
                 this.Claims = user.Claims;
@@ -49,7 +59,7 @@ namespace AppRegPortal.Pages
         {
             try
             {
-                ClaimsPrincipal user = (await this.authenticationStateTask).User;
+                ClaimsPrincipal user = (await this._authProvider.GetAuthenticationStateAsync()).User;
 
                 this.userP = (await this.AuthorizationService.AuthorizeAsync(user, Constants.Auth.UserPolicy)).Succeeded.ToString();
                 this.adminP = (await this.AuthorizationService.AuthorizeAsync(user, Constants.Auth.AdminPolicy)).Succeeded.ToString();

@@ -7,7 +7,7 @@ namespace AppRegPortal.Components
     public partial class NewAppRegFormDialog
     {
         [CascadingParameter]
-        private MudDialogInstance MudDialog { get; set; }
+        private MudDialogInstance? MudDialog { get; set; }
 
     }
 }

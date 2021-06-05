@@ -6,7 +6,7 @@
 
 <AuthorizeView>
 	<Authorized>
-		<MudText>@context.User.Identity.Name</MudText>
+		<MudText>@context?.User?.Identity?.Name</MudText>
 		<MudIconButton Icon="@Icons.Material.Filled.Logout" Color="@Color.Inherit" title="Log out"
 					   @onclick="BeginLogout">Log out</MudIconButton>
 	</Authorized>

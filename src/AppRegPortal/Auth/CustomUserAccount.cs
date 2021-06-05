@@ -15,6 +15,6 @@ namespace AppRegPortal.Auth
         public string[] Wids { get; set; } = Array.Empty<string>();
 
         [JsonPropertyName("oid")]
-        public string Oid { get; set; }
+        public string? Oid { get; set; }
     }
 }

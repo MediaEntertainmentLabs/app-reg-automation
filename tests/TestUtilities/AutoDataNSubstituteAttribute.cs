@@ -44,7 +44,9 @@ namespace TestUtilities
         public AutoDataNSubstituteAttribute(params Type[] customizations) : this(AutoDataOptions.Default, customizations)
         { }
 
+#pragma warning disable CS8603 // Possible null reference return.
         public override string Skip => LiveUnitTestUtil.SkipIfLiveUnitTest(this._skipLiveTest);
+#pragma warning restore CS8603 // Possible null reference return.
 
         private static Func<IFixture> GetFactory(AutoDataOptions options, Type[] cusomizations)
         {

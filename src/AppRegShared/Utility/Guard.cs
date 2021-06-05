@@ -8,7 +8,7 @@ namespace AppRegShared.Utility
 {
     public static class Guard
     {
-        public static T NotNull<T>(T obj, string name, ILogger logger = null)
+        public static T NotNull<T>(T obj, string name, ILogger? logger = null)
         {
             if(obj == null)
             {

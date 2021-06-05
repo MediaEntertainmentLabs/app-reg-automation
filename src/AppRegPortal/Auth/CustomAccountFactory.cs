@@ -30,7 +30,7 @@ namespace AppRegPortal.Auth
         {
             ClaimsPrincipal initialUser = await base.CreateUserAsync(account, options);
 
-            if (initialUser.Identity.IsAuthenticated)
+            if (initialUser?.Identity?.IsAuthenticated == true)
             {
                 var userIdentity = (ClaimsIdentity)initialUser.Identity;
 
@@ -45,7 +45,7 @@ namespace AppRegPortal.Auth
                 }
             }
 
-            return initialUser;
+            return initialUser!;
         }
     }
 }

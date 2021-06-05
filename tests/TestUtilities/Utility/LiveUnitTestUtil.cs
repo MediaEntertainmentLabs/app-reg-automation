@@ -8,7 +8,7 @@ namespace TestUtilities.Utility
         private static readonly bool SLiveUnitTestRuntimeLoaded = AppDomain.CurrentDomain.GetAssemblies()
             .Any(a => a.GetName().Name == "Microsoft.CodeAnalysis.LiveUnitTesting.Runtime");
 
-        public static string SkipIfLiveUnitTest(bool skip)
+        public static string? SkipIfLiveUnitTest(bool skip)
         {
             if (SLiveUnitTestRuntimeLoaded && skip)
             {
