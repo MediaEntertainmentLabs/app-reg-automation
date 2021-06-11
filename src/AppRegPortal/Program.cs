@@ -1,4 +1,5 @@
 using AppRegPortal.Auth;
+using AppRegPortal.Services;
 using AppRegPortal.Utilities;
 
 using AppRegShared;
@@ -10,8 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using MudBlazor.Services;
 
-using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AppRegPortal
@@ -27,15 +26,16 @@ namespace AppRegPortal
 
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
             Program.ConfigureAuth(builder);
 
             builder.Services.AddLogging();
             builder.Services.AddMudServices();
 
+            builder.Services.ConfigureHttpService<IUserAppRegistrationService, UserAppRegistrationService>("API");
+
             builder.Services.UseDIComponentActivator();
             builder.Services.RegisterAllComponentsInImplementingAssembly<Program>();
+
 
             await builder.Build().RunAsync();
         }
@@ -45,8 +45,6 @@ namespace AppRegPortal
             builder.Services.AddMsalAuthentication<RemoteAuthenticationState, CustomUserAccount>(options =>
             {
                 builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-
-                options.ProviderOptions.DefaultAccessTokenScopes.Add("https://graph.microsoft.com/User.Read");
                 options.UserOptions.RoleClaim = "appRole";
 
             }).AddAccountClaimsPrincipalFactory<RemoteAuthenticationState, CustomUserAccount, CustomAccountFactory>();
@@ -54,7 +52,7 @@ namespace AppRegPortal
             builder.Services.AddAuthorizationCore(options =>
             {
                 options.AddPolicy(Constants.Auth.UserPolicy, policy =>
-                    policy.RequireRole(ApplicationRoles.UserRole));
+                    policy.RequireAuthenticatedUser());
 
                 options.AddPolicy(Constants.Auth.AdminPolicy, policy =>
                     policy.RequireRole(ApplicationRoles.AdminRole));
