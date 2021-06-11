@@ -1,10 +1,9 @@
 param location string = resourceGroup().location
 param resourcenamePrefix string = uniqueString(resourceGroup().id)
-var defaultTags={}
+var defaultTags = {}
 
 var logAnalyticsName = take('log-${resourcenamePrefix}', 63)
 var appInsightsName = take('appi-${resourcenamePrefix}', 255)
-
 
 var FunctionAppName = take('func${resourcenamePrefix}', 60)
 var FunctionsHostingPlanName = take('plan${resourcenamePrefix}', 40)
@@ -13,10 +12,10 @@ var FunctionsAppStorageName = take('stfuncb${resourcenamePrefix}', 23)
 var webStorageName = take('webstor${resourcenamePrefix}', 23)
 var dataStorageName = take('datastor${resourcenamePrefix}', 23)
 
-module logAnalytics 'logAnalytics.bicep'={
+module logAnalytics 'logAnalytics.bicep' = {
   name: 'logAnalytics'
-  params:{
-    logAnalyticsName:logAnalyticsName
+  params: {
+    logAnalyticsName: logAnalyticsName
     tags: defaultTags
   }
 }
@@ -30,10 +29,9 @@ module applicationInsights 'applicationInsights.bicep' = {
   }
 }
 
-
-module bffFunctionApp 'functionApp.bicep'={
+module bffFunctionApp 'functionApp.bicep' = {
   name: 'bffFunctionApp'
-  params:{
+  params: {
     functionsAppName: FunctionAppName
     functionsHostingPlanName: FunctionsHostingPlanName
     functionsAppStorageName: FunctionsAppStorageName
@@ -43,7 +41,6 @@ module bffFunctionApp 'functionApp.bicep'={
     tags: defaultTags
   }
 }
-
 
 module webStorage './storage.bicep' = {
   name: 'webStorage'
