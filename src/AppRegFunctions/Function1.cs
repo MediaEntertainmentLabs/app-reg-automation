@@ -1,35 +1,43 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
+using AppRegFunctions.Auth;
+
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace AppRegFunctions
 {
-    public static class Function1
+    public class Function1
     {
-        [FunctionName("Function1")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        private readonly IRequestDataAutorizationService _authService;
+        private readonly ILogger _logger;
+
+        public Function1(IRequestDataAutorizationService authorizationService, ILogger<Function1> logger)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            this._authService = authorizationService;
+            this._logger = logger;
+        }
 
-            string name = req.Query["name"];
+        [Function("Function1")]
+        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req,
+            FunctionContext executionContext)
+        {
+            try
+            {
+                await this._authService.AuthorizeAsync(req, Constants.Auth.AdminPolicy);
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode != null)
+                {
+                    return req.CreateResponse(ex.StatusCode.Value);
+                }
+            }
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name!;
-
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+            HttpResponseData? response = req.CreateResponse();
+            return response;
         }
     }
 }

@@ -11,6 +11,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2020-08-01-preview'={
     name:'Standard_LRS'
     tier: 'Standard'
   }
+  tags: tags
 }
 
 resource storageAccountDiagnosticSettings 'microsoft.insights/diagnosticSettings@2017-05-01-preview' = {
