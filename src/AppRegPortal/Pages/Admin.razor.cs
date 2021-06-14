@@ -1,7 +1,6 @@
 using AppRegShared.Utility;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 using System;
@@ -27,7 +26,7 @@ namespace AppRegPortal.Pages
         private string UserId { get; set; } = string.Empty;
         private IEnumerable<Claim> Claims { get; set; } = Enumerable.Empty<Claim>();
 
-        private AuthenticationStateProvider _authProvider;
+        private readonly AuthenticationStateProvider _authProvider;
 
         public Admin(AuthenticationStateProvider authProvider)
         {
