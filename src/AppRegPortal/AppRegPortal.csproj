@@ -21,8 +21,7 @@
 
   <ItemGroup>
     <Content Update="wwwroot\local.settings.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
 </Project>

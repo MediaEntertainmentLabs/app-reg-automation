@@ -2,7 +2,7 @@
 
 namespace AppRegPortal.Services
 {
-    public interface IUserAppRegistrationService
+    public interface IAppRegistrationService
     {
         Task<string> Test();
     }

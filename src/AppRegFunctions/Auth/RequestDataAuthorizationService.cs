@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace AppRegFunctions.Auth
 {
+    /// <summary>
+    /// Validate correct claims for an out of process C# function
+    /// </summary>
     public class RequestDataAuthorizationService : IRequestDataAutorizationService
     {
         private readonly IAuthorizationService _authService;

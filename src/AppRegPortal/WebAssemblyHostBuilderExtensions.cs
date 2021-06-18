@@ -7,9 +7,15 @@ using System.Threading.Tasks;
 
 namespace AppRegPortal
 {
-
     public static class WebAssemblyHostBuilderExtensions
     {
+        /// <summary>
+        /// Download and add additional setting.json formatted files to config
+        /// </summary>
+        /// <param name="builder">Host builder</param>
+        /// <param name="fileName">Name of the file relative to base URL</param>
+        /// <param name="optional">If the file is required or optional</param>
+        /// <returns></returns>
         public static async Task AddJsonConfiguration(this WebAssemblyHostBuilder builder, string fileName, bool optional)
         {
             var http = new HttpClient()

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AppRegPortal.Services
 {
-    public class UserAppRegistrationService : IUserAppRegistrationService
+    public class AppRegistrationService : IAppRegistrationService
     {
         private readonly HttpClient _client;
         private readonly ILogger _logger;
-        public UserAppRegistrationService(HttpClient httpClient, ILogger<UserAppRegistrationService> logger)
+        public AppRegistrationService(HttpClient httpClient, ILogger<AppRegistrationService> logger)
         {
             this._logger = Guard.NotNull(logger, nameof(logger));
             this._client = Guard.NotNull(httpClient, nameof(httpClient));

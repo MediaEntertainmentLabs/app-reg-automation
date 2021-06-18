@@ -20,6 +20,8 @@ namespace AppRegFunctions.Auth
 
         public Task AuthorizeAsync(HttpRequestData req, string policyName)
         {
+            //Make sure we are in an environment where there is no identity
+            //information available, to prevent accidental use in Azure
             try
             {
                 var identities = req.Identities.ToList();
@@ -33,7 +35,10 @@ namespace AppRegFunctions.Auth
                 //If there are no identities probably OK
                 return Task.CompletedTask;
             }
-            throw new AuthorizationException("Looks like you are using dev auth service in prod");
+
+            string message = "Looks like there are identities associated with this HttpRequestData, don't use DevRequestDataAuthorizationService";
+            this._logger.LogCritical(message);
+            throw new AuthorizationException(message);
         }
     }
 }

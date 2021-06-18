@@ -10,6 +10,13 @@ namespace AppRegPortal.Services
 {
     public static class ServicesExtensions
     {
+        /// <summary>
+        /// Configure a remote Http Service from a config section
+        /// </summary>
+        /// <typeparam name="TService">Interface for the service</typeparam>
+        /// <typeparam name="TImplementation">Class that implements it</typeparam>
+        /// <param name="services">Container to register them in</param>
+        /// <param name="key">Section in configuration that has the settings should conform to <seealso cref="AppRegPortal.Services.ServiceOptions"/> </param>
         public static void ConfigureHttpService<TService, TImplementation>(this IServiceCollection services, string key)
             where TService : class
             where TImplementation : class, TService
@@ -31,8 +38,10 @@ namespace AppRegPortal.Services
                 IConfiguration config = serviceProvider.GetRequiredService<IConfiguration>();
                 var options = new ServiceOptions();
                 config.Bind(key, options);
-
-                handler.ConfigureHandler(authorizedUrls: options.AuthorizedUrls, scopes: options.Scopes);
+                if (options.AuthorizedUrls != null)
+                {
+                    handler.ConfigureHandler(authorizedUrls: options.AuthorizedUrls, scopes: options.Scopes);
+                }
                 return handler;
             });
         }

@@ -62,11 +62,11 @@ GetScopeId() {
 
 PORTAL_APPID=$(CreateAppRegistration $PORTAL_APP_REG_NAME)
 PORTAL_SP_OBJECTID=$(CreateServicePrincipal "$PORTAL_APPID")
-#AddRolesToAppReg $PORTAL_APPID @applicationRoles.json
+AddRolesToAppReg $PORTAL_APPID @applicationRoles.json
 
 FUNCTION_APPID=$(CreateAppRegistration $FUNCTIONS_APP_REG_NAME)
 FUNCTION_SP_OBJECTID=$(CreateServicePrincipal "$FUNCTION_APPID")
-#AddRolesToAppReg $FUNCTION_APPID @applicationRoles.json
+AddRolesToAppReg $FUNCTION_APPID @applicationRoles.json
 
 FUNCTION_APP_USER_IMPERSONATION_ID=$(GetScopeId "$FUNCTION_APPID" user_impersonation)
 

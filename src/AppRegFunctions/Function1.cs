@@ -20,7 +20,7 @@ namespace AppRegFunctions
             this._logger = logger;
         }
 
-        [Function("Function1")]
+        [Function("Test")]
         public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req,
             FunctionContext executionContext)
         {

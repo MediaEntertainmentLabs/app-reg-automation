@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portal", "Portal", "{B1EF94
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{143E0D1D-C81E-4C79-BC28-649D074C9DE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRegFunctions", "src\AppRegFunctions\AppRegFunctions.csproj", "{8234C9FC-2572-4D04-A216-32F14F5DBC23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppRegFunctions", "src\AppRegFunctions\AppRegFunctions.csproj", "{8234C9FC-2572-4D04-A216-32F14F5DBC23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

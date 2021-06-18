@@ -13,12 +13,12 @@ namespace AppRegPortal.Pages
         private IDialogService DialogService { get; set; }
         private readonly HttpClient _httpClient;
         private readonly IHttpClientFactory _clientFactory;
-        private readonly IUserAppRegistrationService _userService;
+        private readonly IAppRegistrationService _userService;
 
         private string? Message { get; set; }
         private string? Result { get; set; }
 
-        public UserRegList(IDialogService dialogService, HttpClient hc, IHttpClientFactory factory, IUserAppRegistrationService userService)
+        public UserRegList(IDialogService dialogService, HttpClient hc, IHttpClientFactory factory, IAppRegistrationService userService)
         {
             this.DialogService = dialogService;
             this._httpClient = hc;

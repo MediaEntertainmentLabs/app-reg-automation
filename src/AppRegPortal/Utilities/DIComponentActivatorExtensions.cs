@@ -11,12 +11,22 @@ namespace AppRegPortal.Utilities
 {
     public static class DIComponentActivatorExtensions
     {
+        /// <summary>
+        /// Replaces the default component activator with <see cref="AppRegPortal.Utilities.DIComponentActivator"/>
+        /// </summary>
+        /// <param name="services">Container</param>
         public static void UseDIComponentActivator(this IServiceCollection services)
         {
             Guard.NotNull(services, nameof(services));
             services.Replace(ServiceDescriptor.Transient<IComponentActivator, DIComponentActivator>());
         }
 
+        /// <summary>
+        /// Automatically register all classes that implement IComponent with the contianer that implements
+        /// <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Type who's assemply will be searched</typeparam>
+        /// <param name="services">Container</param>
         public static void RegisterAllComponentsInImplementingAssembly<T>(this IServiceCollection services)
         {
             Guard.NotNull(services, nameof(services));
