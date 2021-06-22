@@ -2,11 +2,13 @@
 using AppRegShared.Utility;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -15,24 +17,28 @@ namespace AppRegFunctions.Auth
     /// <summary>
     /// Validate correct claims for an out of process C# function
     /// </summary>
-    public class RequestDataAuthorizationService : IRequestDataAutorizationService
+    public class RequestAuthorizationService : IRequestAuthorizationService
     {
         private readonly IAuthorizationService _authService;
         private readonly ILogger _logger;
 
-        public RequestDataAuthorizationService(IAuthorizationService authorizationService, ILogger<RequestDataAuthorizationService> logger)
+        public RequestAuthorizationService(IAuthorizationService authorizationService, ILogger<RequestAuthorizationService> logger)
         {
             this._logger = Guard.NotNull(logger, nameof(logger));
             this._authService = Guard.NotNull(authorizationService, nameof(authorizationService), logger);
         }
+        public Task AuthorizeAsync(HttpRequest req, string policyName)
+        {
+            return this.AuthorizeAsync(req.HttpContext.User, policyName);
+        }
 
-        public async Task AuthorizeAsync(HttpRequestData req, string policyName)
+        public async Task AuthorizeAsync(ClaimsPrincipal claimsPrincipal, string policyName)
         {
             ClaimsPrincipal cp;
             //Update the name type and role type in the ClaimsIdentity
             try
             {
-                ClaimsIdentity[]? identities = req.Identities.Select(i => new ClaimsIdentity(i, null, i.AuthenticationType, "name", "roles")).ToArray();
+                ClaimsIdentity[]? identities = claimsPrincipal.Identities.Select(i => new ClaimsIdentity(i, null, i.AuthenticationType, "name", "roles")).ToArray();
                 cp = new ClaimsPrincipal(identities);
             }
             catch (Exception ex)
@@ -40,7 +46,10 @@ namespace AppRegFunctions.Auth
                 string message = "Error wile getting user identity";
                 this._logger.LogError(ex, message);
 
-                throw new AuthorizationException(message, ex);
+                HttpResponseMessage msg = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                msg.ReasonPhrase = message;
+
+                throw new AuthorizationException(msg);
             }
 
             AuthorizationResult? authResult = await this._authService.AuthorizeAsync(cp, policyName);
@@ -54,7 +63,9 @@ namespace AppRegFunctions.Auth
                 string message = $"Authorization failed for policy {policyName} because following requirements were not met: {requirements}";
                 this._logger?.LogError(message);
 
-                throw new AuthorizationException(message);
+                HttpResponseMessage msg = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+
+                throw new AuthorizationException(msg);
             }
         }
     }

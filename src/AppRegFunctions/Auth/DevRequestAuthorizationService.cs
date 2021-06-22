@@ -1,30 +1,36 @@
 ﻿using AppRegShared.Utility;
 
-using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AppRegFunctions.Auth
 {
-    public class DevRequestDataAuthorizationService : IRequestDataAutorizationService
+    public class DevRequestAuthorizationService : IRequestAuthorizationService
     {
         private readonly ILogger _logger;
 
-        public DevRequestDataAuthorizationService(ILogger<DevRequestDataAuthorizationService> logger)
+        public DevRequestAuthorizationService(ILogger<DevRequestAuthorizationService> logger)
         {
             this._logger = Guard.NotNull(logger, nameof(logger));
         }
-
-        public Task AuthorizeAsync(HttpRequestData req, string policyName)
+        public Task AuthorizeAsync(HttpRequest req, string policyName)
+        {
+            return this.AuthorizeAsync(req.HttpContext.User, policyName);
+        }
+        public Task AuthorizeAsync(ClaimsPrincipal claimsPrincipal, string policyName)
         {
             //Make sure we are in an environment where there is no identity
             //information available, to prevent accidental use in Azure
             try
             {
-                var identities = req.Identities.ToList();
+                var identities = claimsPrincipal.Identities.ToList();
                 if (identities.Count == 0)
                 {
                     return Task.CompletedTask;
@@ -37,8 +43,13 @@ namespace AppRegFunctions.Auth
             }
 
             string message = "Looks like there are identities associated with this HttpRequestData, don't use DevRequestDataAuthorizationService";
+            
+            HttpResponseMessage msg = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            msg.ReasonPhrase = message;
+
             this._logger.LogCritical(message);
-            throw new AuthorizationException(message);
+            
+            throw new AuthorizationException(msg);
         }
     }
 }
