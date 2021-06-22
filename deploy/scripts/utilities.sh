@@ -1,2 +1,9 @@
+#!/bin/bash
+set -euo pipefail
 
-#if [[ -z "${AZURE_SUBSCRIPTION_ID:-}" ]]; then
+#$1 file to source if it exists
+sourceIfExists() {
+    if [ -f "$1" ]; then
+        source $1
+    fi
+}

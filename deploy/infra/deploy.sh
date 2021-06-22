@@ -6,19 +6,29 @@ set -euxo pipefail
 pushd "${0%/*}"
 
 export ROOT=../..
-source $ROOT/.env
+
 source $ROOT/deploy/scripts/utilities.sh
+
+source $ROOT/.env
+sourceIfExists $ROOT/.env.local
+
 source $ROOT/deploy/scripts/login.sh
 
-# Make sure resource group exists or return a reasonable error
-rgLocation=$(az group list -o tsv --query "[?name=='$1'].location")
-if [ -z "$rgLocation" ]; then
-    echo "Make sure you are logged in and resource group ""$1"" exitsts"
-    exit 1
-else
-    echo "deploying to RG: $1 - $rgLocation"
+#Use passed in or default RG name
+rgName=${1-$DEFAULT_RG_NAME}
+
+#Make sure reg is created, use Default region if need to deploy
+if [ $(az group exists --name "$rgName") = false ]; then
+    az group create --name "$rgName" --location "$DEFAULT_DEPLOY_REGION"
 fi
 
-az deployment group create -g "$1" -f "$2"
+#Makes incremental deploysments a bit easier if we can pass in a bicep file name
+bicepfile=${2-$DEFAULT_BICEP_FILE}
+
+az deployment group create -n "$DEFAULT_DEPLOYMENT_NAME" -g "$rgName" -f "$bicepfile" --parameters \
+functionsAuthClientId="$FUNCTION_CLIENT_ID" \
+functionsAuthClientSecret="$FUNCTION_CLIENT_SECRET" \
+functionsAuthAllowedAudiances="$FUNCTION_ALLOWED_AUDIANCES" \
+functionsAuthIssuerURL="$FUNCTION_AUTH_ISSUER"
 
 popd
