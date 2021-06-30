@@ -22,6 +22,7 @@ var KeyValultName = take('kv-${resourcenamePrefix}', 24)
 var webStorageName = take('webstor${resourcenamePrefix}', 23)
 var dataStorageName = take('datastor${resourcenamePrefix}', 23)
 
+
 module logAnalytics 'logAnalytics.bicep'={
   name: 'logAnalytics'
   params:{
@@ -65,8 +66,9 @@ module functionApp 'functionApp.bicep'={
   }
 }
 
+
 module webStorage './storage.bicep' = {
-  name: 'webStorage'
+  name: 'portalWebSite'
   params: {
     storageAccountName: webStorageName
     location: location
@@ -74,6 +76,8 @@ module webStorage './storage.bicep' = {
     tags: defaultTags
   }
 }
+
+output WebsiteStorageAccountName string = webStorage.outputs.storageAccountName
 
 module dataStorage './storage.bicep' = {
   name: 'dataStorage'

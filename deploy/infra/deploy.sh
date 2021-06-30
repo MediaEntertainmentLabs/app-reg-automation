@@ -8,17 +8,14 @@ pushd "${0%/*}"
 export ROOT=../..
 
 source $ROOT/deploy/scripts/utilities.sh
-
-source $ROOT/.env
-sourceIfExists $ROOT/.env.local
-
+source "$ROOT"/deploy/scripts/loadEnvVars.sh
 source $ROOT/deploy/scripts/login.sh
 
 #Use passed in or default RG name
 rgName=${1-$DEFAULT_RG_NAME}
 
 #Make sure reg is created, use Default region if need to deploy
-if [ $(az group exists --name "$rgName") = false ]; then
+if [ "$(az group exists --name "$rgName")" = false ]; then
     az group create --name "$rgName" --location "$DEFAULT_DEPLOY_REGION"
 fi
 
