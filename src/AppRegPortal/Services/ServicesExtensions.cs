@@ -11,7 +11,7 @@ namespace AppRegPortal.Services
     public static class ServicesExtensions
     {
         /// <summary>
-        /// Configure a remote Http Service from a config section
+        /// Configure a remote HTTP Service from a configuration section
         /// </summary>
         /// <typeparam name="TService">Interface for the service</typeparam>
         /// <typeparam name="TImplementation">Class that implements it</typeparam>
