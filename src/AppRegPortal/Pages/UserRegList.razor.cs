@@ -1,62 +1,43 @@
 
 using AppRegPortal.Services;
+using AppRegPortal.Utilities;
+
+using AppRegShared.Utility;
+
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 using MudBlazor;
 
 using System;
-using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace AppRegPortal.Pages
 {
-    public partial class UserRegList
+    public partial class UserRegList : ComponentBase
     {
-        private IDialogService DialogService { get; set; }
-        private readonly HttpClient _httpClient;
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly ILogger<UserRegList> _logger;
         private readonly IAppRegistrationService _userService;
+        private readonly INavigator _navigator;
 
-        private string? Message { get; set; }
-        private string? Result { get; set; }
-
-        public UserRegList(IDialogService dialogService, HttpClient hc, IHttpClientFactory factory, IAppRegistrationService userService)
+        public UserRegList(IDialogService dialogService, IAppRegistrationService userService, INavigator navigator, ILogger<UserRegList> logger)
         {
-            this.DialogService = dialogService;
-            this._httpClient = hc;
-            this._clientFactory = factory;
-            this._userService = userService;
+            this._logger = Guard.NotNull(logger, nameof(logger));
+            this._userService = Guard.NotNull(userService, nameof(userService), this._logger);
+            this._navigator = Guard.NotNull(navigator, nameof(navigator));
         }
 
-        private async void OnNewRequestClick()
+        public void OnNewRequestClick()
         {
             try
             {
-                //this.Message += "Getting client";
-
-                //this._httpClient = this._clientFactory.CreateClient("spn-user-bff");
-
-                //this.Message += "  Getting data";
-                //HttpResponseMessage? dataRequest = await this._httpClient.GetAsync("api/Test?");
-
-                //this.Message += " Checking status code";
-                //if (dataRequest.IsSuccessStatusCode)
-                //{
-                //    this.Message += "  success";
-                //    this.Result = await dataRequest.Content.ReadAsStringAsync();
-                //}
-                //else
-                //{
-                //    this.Message += "  datarequest failed";
-                //    this.Result = dataRequest?.ReasonPhrase!;
-                //}
-                this.Message += await this._userService.Test();
-
+                this._logger.LogInformation("Navigating to new request dialog");
+                this._navigator.NavigateToNewAppRegRequestDialog();
             }
             catch (Exception ex)
             {
-                this.Message += "  Exception " + ex.GetType().ToString();
-                this.Result = ex.Message;
+                this._logger.LogError(ex);
             }
-            this.StateHasChanged();
         }
     }
 }

@@ -10,5 +10,10 @@
 
             public static string DisplayNavigation = "DisplayNavigation";
         }
+
+        public static class Navigation
+        {
+            public static string NewAppRegRequestRoute = "/newappregrequest";
+        }
     }
 }

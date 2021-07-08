@@ -41,6 +41,7 @@ namespace AppRegPortal
             //Automatically register all the components to make them available for DI
             builder.Services.RegisterAllComponentsInImplementingAssembly<Program>();
 
+            builder.Services.AddSingleton<INavigator, Navigator>();
 
             await builder.Build().RunAsync();
         }
