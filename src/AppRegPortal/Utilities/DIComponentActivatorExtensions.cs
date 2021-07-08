@@ -13,6 +13,7 @@ namespace AppRegPortal.Utilities
     {
         /// <summary>
         /// Replaces the default component activator with <see cref="AppRegPortal.Utilities.DIComponentActivator"/>
+        /// This will allow use of constructor injection in the components.
         /// </summary>
         /// <param name="services">Container</param>
         public static void UseDIComponentActivator(this IServiceCollection services)
