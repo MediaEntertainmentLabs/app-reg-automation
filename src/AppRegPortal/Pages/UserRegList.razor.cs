@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using MudBlazor;
 
 using System;
-using System.Threading.Tasks;
 
 namespace AppRegPortal.Pages
 {
@@ -36,7 +35,7 @@ namespace AppRegPortal.Pages
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex);
+                this._logger.LogError(ex, "Error while naviating to new request dialog");
             }
         }
     }
