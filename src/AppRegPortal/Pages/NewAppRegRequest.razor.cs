@@ -24,7 +24,6 @@ namespace AppRegPortal.Pages
         public AppRegistrationRequest Model { get; private set; } = new AppRegistrationRequest();
         public EditContext? Context { get; private set; }
 
-
         public NewAppRegRequest(IAppRegistrationService appregService, INavigator navigator, AuthenticationStateProvider authenticationStateProvider, ILogger<NewAppRegRequest> logger)
         {
             this._logger = Guard.NotNull(logger, nameof(logger));
@@ -62,8 +61,8 @@ namespace AppRegPortal.Pages
             this.Model.RequestId = Guid.NewGuid();
 
             AuthenticationState authState = await this._authStateProvider.GetAuthenticationStateAsync();
-            
-            if(authState.User != null)
+
+            if (authState.User != null)
             {
                 this.Model.RequestorUserName = authState.User?.Identity?.Name;
                 this.Model.RequestorUserId = authState.User?.FindFirst(c => c.Type == "preferred_username")?.Value;

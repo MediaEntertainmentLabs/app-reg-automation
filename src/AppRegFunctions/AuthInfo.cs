@@ -68,7 +68,7 @@ namespace AppRegFunctions
         public async Task<IActionResult> RequiresUser([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req)
         {
             await this._authService.AuthorizeAsync(req, Constants.Auth.UserPolicy);
-            
+
             return new OkResult();
         }
 

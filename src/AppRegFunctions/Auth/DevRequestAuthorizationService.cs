@@ -43,12 +43,14 @@ namespace AppRegFunctions.Auth
             }
 
             string message = "Looks like there are identities associated with this HttpRequestData, don't use DevRequestDataAuthorizationService";
-            
-            HttpResponseMessage msg = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-            msg.ReasonPhrase = message;
+
+            var msg = new HttpResponseMessage(HttpStatusCode.Unauthorized)
+            {
+                ReasonPhrase = message
+            };
 
             this._logger.LogCritical(message);
-            
+
             throw new AuthorizationException(msg);
         }
     }

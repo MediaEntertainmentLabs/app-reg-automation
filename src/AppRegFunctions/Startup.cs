@@ -14,7 +14,7 @@ namespace AppRegFunctions
         public override void Configure(IFunctionsHostBuilder builder)
         {
 
-            var context = builder.GetContext();
+            FunctionsHostBuilderContext? context = builder.GetContext();
             if (string.Compare(context.EnvironmentName, "Development", true) == 0)
             {
                 builder.Services.AddSingleton<IRequestAuthorizationService, DevRequestAuthorizationService>();

@@ -46,8 +46,10 @@ namespace AppRegFunctions.Auth
                 string message = "Error wile getting user identity";
                 this._logger.LogError(ex, message);
 
-                HttpResponseMessage msg = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-                msg.ReasonPhrase = message;
+                var msg = new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                {
+                    ReasonPhrase = message
+                };
 
                 throw new AuthorizationException(msg);
             }
@@ -63,7 +65,7 @@ namespace AppRegFunctions.Auth
                 string message = $"Authorization failed for policy {policyName} because following requirements were not met: {requirements}";
                 this._logger?.LogError(message);
 
-                HttpResponseMessage msg = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                var msg = new HttpResponseMessage(HttpStatusCode.Unauthorized);
 
                 throw new AuthorizationException(msg);
             }

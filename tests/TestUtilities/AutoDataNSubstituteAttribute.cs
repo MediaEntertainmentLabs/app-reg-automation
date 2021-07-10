@@ -52,7 +52,7 @@ namespace TestUtilities
         {
             return () =>
             {
-                var fixture = new Fixture();
+                IFixture fixture = new Fixture();
 
                 if (cusomizations != null)
                 {
@@ -66,7 +66,7 @@ namespace TestUtilities
                         else if (typeof(ICustomization).IsAssignableFrom(customizationType))
                         {
                             var customization = Activator.CreateInstance(customizationType) as ICustomization;
-                            fixture.Customize(customization);
+                            fixture = fixture.Customize(customization);
                         }
                         else
                         {
@@ -75,7 +75,7 @@ namespace TestUtilities
                     }
                 }
 
-                fixture.Customize(new AutoNSubstituteCustomization() { ConfigureMembers = (options & AutoDataOptions.SkipMembers) != AutoDataOptions.SkipMembers });
+                fixture = fixture.Customize(new AutoNSubstituteCustomization() { ConfigureMembers = (options & AutoDataOptions.SkipMembers) != AutoDataOptions.SkipMembers });
 
                 return fixture;
             };
