@@ -68,7 +68,10 @@ FUNCTION_APPID=$(CreateAppRegistration $FUNCTIONS_APP_REG_NAME)
 FUNCTION_SP_OBJECTID=$(CreateServicePrincipal "$FUNCTION_APPID")
 AddRolesToAppReg $FUNCTION_APPID @applicationRoles.json
 
+#Add user impersonation permission to the portal app
 FUNCTION_APP_USER_IMPERSONATION_ID=$(GetScopeId "$FUNCTION_APPID" user_impersonation)
 
 az ad app permission add --id "$PORTAL_APPID" --api "$FUNCTION_APPID" --api-permissions "$FUNCTION_APP_USER_IMPERSONATION_ID"
 az ad app permission grant --id "$PORTAL_APPID" --api "$FUNCTION_APPID" --expires "never" --consent-type AllPrincipals --scope "user_impersonation"
+
+#TODO: Add optional claims here az ad app update -h

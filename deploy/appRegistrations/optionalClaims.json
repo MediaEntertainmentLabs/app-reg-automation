@@ -1,0 +1,20 @@
+{
+    "idToken": [
+        {
+            "name": "verified_primary_email",
+            "essential": true
+        },
+        {
+            "name": "verified_secondary_email",
+            "essential": true
+        },
+        {
+            "name": "email",
+            "essential": true
+        },
+        {
+            "name": "upn",
+            "essential": true
+        }
+    ]
+}
