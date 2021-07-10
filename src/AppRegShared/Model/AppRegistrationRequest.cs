@@ -15,5 +15,6 @@ namespace AppRegShared.Model
         public string? RequestorEmailAddress { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Application name is required")]
         public string? ApplicationName { get; set; }
+        public string? AdditionalInfo { get; set; }
     }
 }

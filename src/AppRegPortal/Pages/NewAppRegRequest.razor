@@ -1,5 +1,31 @@
 ﻿@page "/newappregrequest"
 @using AppRegPortal.Components
-<h3>NewAppRegRequest</h3>
 
-<AppRegDetailsForm></AppRegDetailsForm>
+<EditForm EditContext="@Context" OnValidSubmit="OnValidSubmit">
+    <MudGrid Class="px-10 pt-10">
+        <MudItem xs="12">
+            <MudTextField Disabled="true" Label="Request ID" @bind-Value="@Model.RequestId" For="@(() => Model.RequestId)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Disabled="true" Label="User Name" @bind-Value="@Model.RequestorUserName" For="@(() => Model.RequestorUserName)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Disabled="true" Label="User Id" @bind-Value="@Model.RequestorUserId" For="@(() => Model.RequestorUserId)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="User Email" @bind-Value="@Model.RequestorEmailAddress" For="@(() => Model.RequestorEmailAddress)" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Label="Application Name" @bind-Value="@Model.ApplicationName" For="@(() => Model.ApplicationName)" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Lines="3" Label="Additional Information" @bind-Value="@Model.AdditionalInfo" For="@(() => Model.AdditionalInfo)" />
+        </MudItem>
+        <MudItem xs="12" Class="d-flex justify-end mx-5">
+            <MudButton Class="ma-2" ButtonType="ButtonType.Button" Variant="Variant.Text" Color="Color.Secondary" OnClick="OnCancel">Cancel</MudButton>
+            <MudButton Class="ma-2" ButtonType="ButtonType.Button" Variant="Variant.Text" Color="Color.Secondary" OnClick="OnReset">Reset</MudButton>
+            <MudButton Class="ma-2" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Submit</MudButton>
+        </MudItem>
+    </MudGrid>
+
+</EditForm>
