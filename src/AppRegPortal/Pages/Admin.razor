@@ -1,0 +1,41 @@
+﻿@page "/admin"
+@using AppRegShared
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@inject IAuthorizationService AuthorizationService
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-16">
+
+<MudTabs Outlined="true">
+	<MudTabPanel Text="Auth"  Icon="@Icons.Material.Filled.AssignmentInd">
+	 	<MudText>@this.UserId</MudText>
+	<MudText>@this.Message</MudText>
+
+	@if (this.Claims.Count() > 0)
+	{
+	 <MudTable Items="@Claims" Hover="true" SortLabel="Sort By">
+	  <HeaderContent>
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.Type)">Type</MudTableSortLabel></MudTh>
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.Value)">Value</MudTableSortLabel></MudTh>
+
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.Issuer)">Issuer</MudTableSortLabel></MudTh>
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.OriginalIssuer)">Original Iss</MudTableSortLabel></MudTh>
+	   <MudTh><MudTableSortLabel SortBy="new Func<Claim, object>(x=>x.Subject!)">Subject</MudTableSortLabel></MudTh>
+	  </HeaderContent>
+	  <RowTemplate>
+	   <MudTd DataLabel="Type">@context.Type</MudTd>
+	   <MudTd DataLabel="Value">@context.Value</MudTd>
+	   <MudTd DataLabel="Issuer">@context.Issuer</MudTd>
+	   <MudTd DataLabel="OriginalIssuer">@context.OriginalIssuer</MudTd>
+	   <MudTd DataLabel="Subject">@context.Subject</MudTd>
+	  </RowTemplate>
+
+	 </MudTable>
+	}
+ </MudTabPanel>
+</MudTabs>
+
+</MudContainer>
+
+
+

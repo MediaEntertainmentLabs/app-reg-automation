@@ -1,0 +1,29 @@
+[
+    {
+      "allowedMemberTypes": [
+        "User"
+      ],
+      "description": "Users of the application",
+      "displayName": "user",
+      "isEnabled": true,
+      "value": "user"
+    },
+    {
+      "allowedMemberTypes": [
+        "User"
+      ],
+      "description": "Application administrators",
+      "displayName": "admin",
+      "isEnabled": true,
+      "value": "admin"
+    },
+    {
+      "allowedMemberTypes": [
+        "User"
+      ],
+      "description": "People who can approve requests",
+      "displayName": "approver",
+      "isEnabled": true,
+      "value": "approver"
+    }
+  ]

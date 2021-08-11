@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant u as User
+    participant pf as Portal Backend
+    participant bus as Message Bus
+    participant rm as AppReg Request Manager
+    participant ra as Request Access
+    
+    u->>+pf: Add Request
+    pf->>+bus: Add Request
+    bus-->>-pf: Ack
+    pf-->>-u: Added
+    
+    
+    bus->>+rm: New Request
+    activate bus
+    rm->>+ra: Store Request
+    ra-->>-rm: Ack
+    rm->>-bus: Request Status Changed (submitted)
+    deactivate bus
+    
+    bus->>+pf: Request Status Chagned (submitted)
+    activate bus
+    pf-)u: Update UI
+    pf-->>-bus: Ack
+    deactivate bus
+

@@ -1,7 +1,19 @@
 ﻿@page "/"
+@using AppRegShared
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 
-<h1>Hello, world!</h1>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-16">
 
-Welcome to your new app.
+	<AuthorizeView>
+		<Authorized>
+			<UserRegList></UserRegList>
+		</Authorized>
+		<NotAuthorized>
+			<MudText Typo="Typo.h4" Align="Align.Center">Please log in to continue</MudText>
+		</NotAuthorized>
+	</AuthorizeView>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+</MudContainer>
+
+
